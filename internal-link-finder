@@ -1,0 +1,41 @@
+import csv
+import os
+import time
+
+#Time script
+start_time = time.time()
+
+#import blog copy
+bloglistfile = open('blog-list.csv', encoding="utf8")
+bloglistreader = csv.reader(bloglistfile)
+bloglistdata = list(bloglistreader)
+#import keyword map
+kwlistfile = open('kw-list.csv')
+kwlistreader = csv.reader(kwlistfile)
+kwlistdata = list(kwlistreader)
+
+#define output csv content
+outputcsvData = []
+
+#begin for loop
+for j in kwlistdata:
+    for i in bloglistdata:
+        #convert to lower case
+        blog_lower = i[1]
+        blog_lower = blog_lower.lower()
+        if j[1] in blog_lower:
+            if j[0] not in blog_lower:
+                templist = [j[1],j[0],i[0]]
+                outputcsvData.append(templist)
+
+#Export results
+outputFile = open('output.csv', 'w', newline='')
+outputWriter = csv.writer(outputFile)
+for l in outputcsvData:
+    outputWriter.writerow(l)
+outputFile.close()
+
+#Completed     
+elapsed_time_round = time.time() - start_time
+elapsed_time_round = round(elapsed_time_round, 2)
+print("Completed. Time elapsed = " + str(elapsed_time_round) + " seconds")
